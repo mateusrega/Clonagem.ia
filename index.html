@@ -48,7 +48,7 @@ const formData = new FormData()
 formData.append("voice", voice)
 formData.append("text", text)
 
-const res = await fetch("http://localhost:8000/clone",{
+const res = await fetch("https://seu-backend.up.railway.app/clone"),{
 method:"POST",
 body:formData
 })
