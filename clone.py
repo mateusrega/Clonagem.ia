@@ -1,28 +1,25 @@
-from fastapi import FastAPI, UploadFile, Form
+from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import FileResponse
-from fastapi.middleware.cors import CORSMiddleware
 from TTS.api import TTS
-import shutil
+import uuid
 
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# modelo mais leve
-tts = TTS("tts_models/en/ljspeech/tacotron2-DDC")
+tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2")
 
 @app.post("/clone")
-async def clone(text: str = Form(...)):
+async def clone_voice(voice: UploadFile = File(...), text: str = Form(...)):
+
+    voice_path = f"voice_{uuid.uuid4()}.wav"
+    output_path = f"output_{uuid.uuid4()}.wav"
+
+    with open(voice_path, "wb") as f:
+        f.write(await voice.read())
 
     tts.tts_to_file(
         text=text,
-        file_path="output.wav"
+        speaker_wav=voice_path,
+        file_path=output_path
     )
 
-    return FileResponse("output.wav")
+    return FileResponse(output_path)
