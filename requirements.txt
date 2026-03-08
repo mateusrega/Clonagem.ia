@@ -1,6 +1,0 @@
-fastapi
-uvicorn
-python-multipart
-TTS==0.22.0
-torch
-torchaudio
