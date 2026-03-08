@@ -41,14 +41,12 @@ padding:10px;
 
 async function generate(){
 
-const voice = document.getElementById("voice").files[0]
 const text = document.getElementById("text").value
 
 const formData = new FormData()
-formData.append("voice", voice)
 formData.append("text", text)
 
-const res = await fetch("https://seu-backend.up.railway.app/clone"),{
+const res = await fetch("https://SEU-BACKEND.up.railway.app/clone",{
 method:"POST",
 body:formData
 })
