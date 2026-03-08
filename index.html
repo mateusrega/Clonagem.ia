@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Voice Clone AI</title>
+
+<style>
+body{
+font-family: Arial;
+text-align:center;
+margin-top:40px;
+}
+
+input,button{
+margin:10px;
+padding:10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Clonar Voz</h1>
+
+<input type="file" id="voice">
+
+<br>
+
+<input type="text" id="text" placeholder="Digite o texto">
+
+<br>
+
+<button onclick="generate()">Gerar voz</button>
+
+<br><br>
+
+<audio id="audio" controls></audio>
+
+<script>
+
+async function generate(){
+
+const voice = document.getElementById("voice").files[0]
+const text = document.getElementById("text").value
+
+const formData = new FormData()
+formData.append("voice", voice)
+formData.append("text", text)
+
+const res = await fetch("http://localhost:8000/clone",{
+method:"POST",
+body:formData
+})
+
+const blob = await res.blob()
+
+document.getElementById("audio").src =
+URL.createObjectURL(blob)
+
+}
+
+</script>
+
+</body>
+</html>
