@@ -14,18 +14,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2")
+# modelo mais leve
+tts = TTS("tts_models/en/ljspeech/tacotron2-DDC")
 
 @app.post("/clone")
-async def clone(voice: UploadFile, text: str = Form(...)):
-
-    with open("voice.wav", "wb") as buffer:
-        shutil.copyfileobj(voice.file, buffer)
+async def clone(text: str = Form(...)):
 
     tts.tts_to_file(
         text=text,
-        speaker_wav="voice.wav",
-        language="pt",
         file_path="output.wav"
     )
 
